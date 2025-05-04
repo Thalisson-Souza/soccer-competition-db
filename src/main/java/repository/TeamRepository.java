@@ -16,7 +16,7 @@ public class TeamRepository {
     public void saveTeam(Team time) throws SQLException {
         String sql = "INSERT INTO Team (name, stadium, city, foundation_date, coach_id) VALUES (?, ?, ?, ?, ?)";
 
-        try (PreparedStatement save = connect.prepareStatement(sql);) {
+        try (PreparedStatement save = connect.prepareStatement(sql)) {
             save.setString(1, time.getName());
             save.setString(2, time.getEstadium());
             save.setString(3, time.getCity());
