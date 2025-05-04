@@ -31,7 +31,7 @@ public class TeamSaveTest {
         team.setCoach(coach);
 
         // Salva o time no banco de dados
-        repository.save(team);
+        repository.saveTeam(team);
 
         // Fecha a conexão
         connect.close();
