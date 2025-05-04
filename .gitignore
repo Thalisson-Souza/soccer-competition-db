@@ -30,3 +30,6 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+# Ignora os arquivos de testes
+/src/test/**
