@@ -1,13 +1,17 @@
-package entity;
+package main.java.entity;
 
-public class Treinador {
+public class Coach {
 
    private long id;
    private String name;
 
-    public Treinador(long id, String name) {
+    public Coach(long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Coach() {
+
     }
 
     public long getId() {
