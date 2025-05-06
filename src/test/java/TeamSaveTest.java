@@ -24,10 +24,10 @@ public class TeamSaveTest {
 
         // Cria uma instância de Team
         Team team = new Team();
-        team.setName("Team Save Test");
-        team.setEstadium("Test Stadium");
-        team.setCity("Test City");
-        team.setFoundationDate(LocalDate.of(2000, 1, 1));
+        team.setName("Internacional");
+        team.setEstadium("Beira Rio");
+        team.setCity("Porto Alegre");
+        team.setFoundationDate(LocalDate.of(1909, 4, 4));
         team.setCoach(coach);
 
         // Salva o time no banco de dados
