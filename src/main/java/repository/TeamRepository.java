@@ -1,13 +1,13 @@
 package main.java.repository;
 
-import main.java.entity.Coach;
 import main.java.entity.Team;
+import main.java.repository.interfaces.ITeamRepository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TeamRepository {
+public class TeamRepository implements ITeamRepository {
     private Connection connect;
 
     public TeamRepository(Connection connect) {
@@ -61,7 +61,7 @@ public class TeamRepository {
             int linhasAfetadas = update.executeUpdate();
             if (linhasAfetadas > 0) {
                 System.out.println("Time atualizado com sucesso!");
-            }else {
+            } else {
                 System.out.println("Não encontrei time pelo ID dado");
             }
             return time;
@@ -70,15 +70,13 @@ public class TeamRepository {
 
     }
 
-    public Team findTeamById(Long id) throws SQLException {
-        String sql = "SELECT t.id, t.name, t.stadium, t.city, t.foundation_date, c.id as coach_id, c.name as coach_name " +
-                "FROM Team t " +
-                "LEFT JOIN Coach c ON t.coach_id = c.id " +
-                "WHERE t.id = ?";
-
-
+    private Team findTeamByKey(String sql, Object key) throws SQLException {
         try (PreparedStatement find = connect.prepareStatement(sql)) {
-            find.setLong(1, id);
+            if (key instanceof Long) {
+                find.setLong(1, (Long) key);
+            } else if (key instanceof String) {
+                find.setString(1, "%" + key + "%");
+            }
 
             try (ResultSet rs = find.executeQuery()) {
                 if (rs.next()) {
@@ -89,31 +87,55 @@ public class TeamRepository {
                     team.setCity(rs.getString("city"));
                     team.setFoundationDate(rs.getDate("foundation_date").toLocalDate());
 
-                    Coach coach = new Coach();
-                    coach.setId(rs.getLong("coach_id"));
-                    coach.setName(rs.getString("name"));
-                    team.setCoach(coach);
-
+                    team.setCoach(null); // Temporariamente, sem técnico
                     return team;
-                }else{
+                } else {
                     return null;
                 }
             }
         }
     }
 
-    public void deleteById(Long id) throws SQLException{
-        String sql = "DELETE FROM Team WHERE id = ?";
+    public Team findTeamById(Long id) throws SQLException {
+        String sql = "SELECT t.id, t.name, t.stadium, t.city, t.foundation_date, c.id as coach_id, c.name as coach_name " +
+                "FROM Team t " +
+                "LEFT JOIN Coach c ON t.coach_id = c.id " +
+                "WHERE t.id = ?";
+        return findTeamByKey(sql, id);
+    }
 
+    public Team findTeamByName(String name) throws SQLException {
+        String sql = "SELECT t.id, t.name, t.stadium, t.city, t.foundation_date, c.id as coach_id, c.name as coach_name " +
+                "FROM Team t " +
+                "LEFT JOIN Coach c ON t.coach_id = c.id " +
+                "WHERE t.name LIKE ?";
+        return findTeamByKey(sql, name);
+    }
+
+    private void deleteTeamByKey(String sql, Object key) throws SQLException {
         try (PreparedStatement delete = connect.prepareStatement(sql)) {
-            delete.setLong(1, id);
+            if (key instanceof Long) {
+                delete.setLong(1, (Long) key);
+            } else if (key instanceof String) {
+                delete.setString(1, key.toString());
+            }
 
             int rows = delete.executeUpdate();
             if (rows > 0) {
                 System.out.println("Time deletado com sucesso!");
             } else {
-                System.out.println("Não encontrado o ID dado");
+                System.out.println("Não encontrado o dado fornecido");
             }
         }
+    }
+
+    public void deleteById(Long id) throws SQLException {
+        String sql = "DELETE FROM Team WHERE id = ?";
+        deleteTeamByKey(sql, id);
+    }
+
+    public void deleteByName(String name) throws SQLException {
+        String sql = "DELETE FROM Team WHERE name = ?";
+        deleteTeamByKey(sql, name);
     }
 }
