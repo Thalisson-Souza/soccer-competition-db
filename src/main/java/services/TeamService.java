@@ -1,17 +1,16 @@
 package main.java.services;
 
 import main.java.entity.Team;
-import main.java.repository.TeamRepository;
+import main.java.repository.interfaces.ITeamRepository;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 public class TeamService {
-    private TeamRepository repository;
+    private ITeamRepository repository;
     private static final int MAX_PLAYERS = 25;
 
-    public TeamService(TeamRepository repository) {
+    public TeamService(ITeamRepository repository) {
         this.repository = repository;
     }
 
@@ -33,11 +32,15 @@ public class TeamService {
         repository.updateTeam(team);
     }
 
-    public void searchTeam (Long id) throws SQLException {
-        repository.findTeamById(id);
+    public void searchTeam (String name) throws SQLException {
+        repository.findTeamByName(name);
     }
 
-    public void deleteTeam(Long id) throws SQLException {
+    public void deleteTeamById(Long id) throws SQLException {
         repository.deleteById(id);
+    }
+
+    public void deleteTeamByName(String name) throws SQLException {
+        repository.deleteByName(name);
     }
 }
