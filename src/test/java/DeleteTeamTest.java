@@ -14,23 +14,42 @@ import static org.junit.Assert.assertNull;
 public class DeleteTeamTest {
 
     @Test
-    public void testDeleteTeam() throws SQLException {
-        Connection connect = db_connection.getConnection();
-        TeamRepository repository = new TeamRepository(connect);
+    public void testDeleteTeamById() throws SQLException {
+        try (Connection connect = db_connection.getConnection()) {
+            TeamRepository repository = new TeamRepository(connect);
 
-        Long existsId = 1L; // ID do time que você deseja excluir
+            Long searchId = 1L; // ID do time que você deseja excluir
 
-        // Antes de excluir, verifica se o time existe
-        Team team = repository.findTeamById(existsId);
-        assertNotNull("O time não foi encontrado antes da exclusão!", team);
+            // Antes de excluir, verifica se o time existe
+            Team team = repository.findTeamById(searchId);
+            assertNotNull("O time não foi encontrado antes da exclusão!", team);
 
-        // Exclui o time
-        repository.deleteById(existsId);
+            // Exclui o time pelo ID
+            repository.deleteById(searchId);
 
-        // Verifica se o time foi realmente excluído
-        Team deletedTeam = repository.findTeamById(existsId);
-        assertNull("O time não foi excluído corretamente!", deletedTeam); // Espera que seja nulo
+            // Verifica se o time foi realmente excluído
+            Team deletedTeam = repository.findTeamById(searchId);
+            assertNull("O time não foi excluído corretamente!", deletedTeam);
+        }
+    }
 
-        connect.close();
+    @Test
+    public void testDeleteTeamByName() throws SQLException {
+        try (Connection connect = db_connection.getConnection()) {
+            TeamRepository repository = new TeamRepository(connect);
+
+            String searchName = "Internacional"; // Nome do time pra excluir
+
+            // Antes de excluir, verifica se o time existe
+            Team team = repository.findTeamByName(searchName);
+            assertNotNull("O time não foi encontrado antes da exclusão!", team);
+
+            // Exclui o time pelo Nome
+            repository.deleteByName(searchName);
+
+            // Verifica se o time foi realmente excluído
+            Team deletedTeam = repository.findTeamByName(searchName);
+            assertNull("O time não foi excluído corretamente!", deletedTeam);
+        }
     }
 }
