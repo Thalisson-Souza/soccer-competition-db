@@ -7,6 +7,7 @@ public class Player {
     private String position;
     private int age;
     private int shirtNumber;
+    private Team team;
 
     public Player(long id, String name, String position, int age, int shirtNumber) {
         this.id = id;
@@ -14,6 +15,9 @@ public class Player {
         this.position = position;
         this.age = age;
         this.shirtNumber = shirtNumber;
+    }
+
+    public Player() {
     }
 
     public long getId() {
@@ -54,5 +58,13 @@ public class Player {
 
     public void setShirtNumber(int shirtNumber) {
         this.shirtNumber = shirtNumber;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }
