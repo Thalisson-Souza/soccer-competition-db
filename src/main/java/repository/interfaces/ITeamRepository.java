@@ -12,5 +12,5 @@ public interface ITeamRepository {
     Team findTeamByName(String name) throws SQLException;
     void deleteById(Long id) throws SQLException;
     void deleteByName(String name) throws SQLException;
-    Team updateTeam(Team time) throws SQLException;
+    void updateTeam(Team time) throws SQLException;
 }

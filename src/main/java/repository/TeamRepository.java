@@ -14,9 +14,9 @@ public class TeamRepository implements ITeamRepository {
         this.connect = connect;
     }
 
+    @Override
     public void saveTeam(Team time) throws SQLException {
         String sql = "INSERT INTO Team (name, stadium, city, foundation_date, coach_id) VALUES (?, ?, ?, ?, ?)";
-
         try (PreparedStatement save = connect.prepareStatement(sql)) {
             save.setString(1, time.getName());
             save.setString(2, time.getEstadium());
@@ -27,9 +27,9 @@ public class TeamRepository implements ITeamRepository {
         }
     }
 
+    @Override
     public List<Team> findAllTeams() throws SQLException {
         String sql = "SELECT * FROM Team";
-
         try (Statement stmt = connect.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -47,7 +47,7 @@ public class TeamRepository implements ITeamRepository {
         }
     }
 
-    public Team updateTeam(Team time) throws SQLException {
+    public void updateTeam(Team time) throws SQLException {
         String sql = "UPDATE Team SET name = ?, stadium = ?, city = ?, foundation_date = ?, coach_id = ? WHERE id = ?";
 
         try (PreparedStatement update = connect.prepareStatement(sql)) {
@@ -57,17 +57,7 @@ public class TeamRepository implements ITeamRepository {
             update.setDate(4, java.sql.Date.valueOf(time.getFoundationDate()));
             update.setLong(5, time.getCoach().getId());
             update.setLong(6, time.getId());
-
-            int linhasAfetadas = update.executeUpdate();
-            if (linhasAfetadas > 0) {
-                System.out.println("Time atualizado com sucesso!");
-            } else {
-                System.out.println("Não encontrei time pelo ID dado");
-            }
-            return time;
         }
-
-
     }
 
     private Team findTeamByKey(String sql, Object key) throws SQLException {
@@ -96,6 +86,7 @@ public class TeamRepository implements ITeamRepository {
         }
     }
 
+    @Override
     public Team findTeamById(Long id) throws SQLException {
         String sql = "SELECT t.id, t.name, t.stadium, t.city, t.foundation_date, c.id as coach_id, c.name as coach_name " +
                 "FROM Team t " +
@@ -104,6 +95,7 @@ public class TeamRepository implements ITeamRepository {
         return findTeamByKey(sql, id);
     }
 
+    @Override
     public Team findTeamByName(String name) throws SQLException {
         String sql = "SELECT t.id, t.name, t.stadium, t.city, t.foundation_date, c.id as coach_id, c.name as coach_name " +
                 "FROM Team t " +
@@ -112,30 +104,21 @@ public class TeamRepository implements ITeamRepository {
         return findTeamByKey(sql, name);
     }
 
-    private void deleteTeamByKey(String sql, Object key) throws SQLException {
+    @Override
+    public void deleteById(Long id) throws SQLException {
+        String sql = "DELETE FROM Team WHERE id = ?";
         try (PreparedStatement delete = connect.prepareStatement(sql)) {
-            if (key instanceof Long) {
-                delete.setLong(1, (Long) key);
-            } else if (key instanceof String) {
-                delete.setString(1, key.toString());
-            }
-
-            int rows = delete.executeUpdate();
-            if (rows > 0) {
-                System.out.println("Time deletado com sucesso!");
-            } else {
-                System.out.println("Não encontrado o dado fornecido");
-            }
+            delete.setLong(1, id);
+            delete.executeUpdate();
         }
     }
 
-    public void deleteById(Long id) throws SQLException {
-        String sql = "DELETE FROM Team WHERE id = ?";
-        deleteTeamByKey(sql, id);
-    }
-
+    @Override
     public void deleteByName(String name) throws SQLException {
         String sql = "DELETE FROM Team WHERE name = ?";
-        deleteTeamByKey(sql, name);
+        try (PreparedStatement delete = connect.prepareStatement(sql)) {
+            delete.setString(1, name);
+            delete.executeUpdate();
+        }
     }
 }

@@ -2,7 +2,7 @@ package main.java.entity;
 
 public class Coach {
 
-   private long id;
+   private Long id;
    private String name;
 
     public Coach(long id, String name) {
