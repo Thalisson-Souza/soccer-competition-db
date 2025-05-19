@@ -15,7 +15,7 @@ public class TeamService {
     }
 
     public void addTeam(Team team) throws SQLException {
-        if (team.getJogadores().size() > MAX_PLAYERS) {
+        if (team.getPlayers().size() > MAX_PLAYERS) {
             throw new IllegalArgumentException("Jogadores cannot have more than 25 jogadores.");
         }
         repository.saveTeam(team);
@@ -26,7 +26,7 @@ public class TeamService {
     }
 
     public void updateTeam(Team team) throws SQLException {
-        if (team.getJogadores().size() > MAX_PLAYERS) {
+        if (team.getPlayers().size() > MAX_PLAYERS) {
             throw new IllegalArgumentException("Jogadores cannot have more than 25 jogadores.");
         }
         repository.updateTeam(team);

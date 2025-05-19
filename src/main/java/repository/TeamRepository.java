@@ -19,7 +19,7 @@ public class TeamRepository implements ITeamRepository {
         String sql = "INSERT INTO Team (name, stadium, city, foundation_date, coach_id) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement save = connect.prepareStatement(sql)) {
             save.setString(1, time.getName());
-            save.setString(2, time.getEstadium());
+            save.setString(2, time.getStadium());
             save.setString(3, time.getCity());
             save.setDate(4, java.sql.Date.valueOf(time.getFoundationDate()));
             save.setLong(5, time.getCoach().getId());
@@ -38,7 +38,7 @@ public class TeamRepository implements ITeamRepository {
                 Team team = new Team();
                 team.setId(rs.getLong("id"));
                 team.setName(rs.getString("name"));
-                team.setEstadium(rs.getString("stadium"));
+                team.setStadium(rs.getString("stadium"));
                 team.setCity(rs.getString("city"));
                 team.setFoundationDate(rs.getDate("foundation_date").toLocalDate());
                 teams.add(team);
@@ -52,7 +52,7 @@ public class TeamRepository implements ITeamRepository {
 
         try (PreparedStatement update = connect.prepareStatement(sql)) {
             update.setString(1, time.getName());
-            update.setString(2, time.getEstadium());
+            update.setString(2, time.getStadium());
             update.setString(3, time.getCity());
             update.setDate(4, java.sql.Date.valueOf(time.getFoundationDate()));
             update.setLong(5, time.getCoach().getId());
@@ -73,7 +73,7 @@ public class TeamRepository implements ITeamRepository {
                     Team team = new Team();
                     team.setId(rs.getLong("id"));
                     team.setName(rs.getString("name"));
-                    team.setEstadium(rs.getString("stadium"));
+                    team.setStadium(rs.getString("stadium"));
                     team.setCity(rs.getString("city"));
                     team.setFoundationDate(rs.getDate("foundation_date").toLocalDate());
 

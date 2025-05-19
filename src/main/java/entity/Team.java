@@ -5,32 +5,32 @@ import java.util.List;
 
 public class Team {
 
-    private long id;
+    private Long id;
     private String name;
-    private String estadium;
+    private String stadium;
     private String city;
     private LocalDate foundationDate;
     private Coach coach;
-    private List<Player> jogadores;
+    private List<Player> players;
 
    public Team() {
    }
 
-    public Team(long id, String name, String estadium, String city, LocalDate foundationDate, Coach coach, List<Player> jogadores) {
+    public Team(Long id, String name, String stadium, String city, LocalDate foundationDate, Coach coach, List<Player> players) {
         this.id = id;
         this.name = name;
-        this.estadium = estadium;
+        this.stadium = stadium;
         this.city = city;
         this.foundationDate = foundationDate;
         this.coach = coach;
-        this.jogadores = jogadores;
+        this.players = players;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -42,12 +42,12 @@ public class Team {
         this.name = name;
     }
 
-    public String getEstadium() {
-        return estadium;
+    public String getStadium() {
+        return stadium;
     }
 
-    public void setEstadium(String estadium) {
-        this.estadium = estadium;
+    public void setStadium(String stadium) {
+        this.stadium = stadium;
     }
 
     public String getCity() {
@@ -74,12 +74,12 @@ public class Team {
         this.coach = coach;
     }
 
-    public List<Player> getJogadores() {
-        return jogadores;
+    public List<Player> getPlayers() {
+        return players;
     }
 
-    public void setJogadores(List<Player> jogadores) {
-        this.jogadores = jogadores;
+    public void setPlayers(List<Player> players) {
+        this.players = players;
     }
 
     public void add(Team team) {
